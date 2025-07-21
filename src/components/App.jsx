@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // `https://api.frankfurter.app/latest?amount=100&from=EUR&to=USD`
 
 export default function App() {
+  useEffect(function () {
+    async function fetchData() {
+      const res = await fetch(
+        'https://api.frankfurter.app/latest?amount=100&from=EUR&to=USD'
+      );
+      const data = await res.json();
+      console.log(data);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div>
       <input type="text" />
