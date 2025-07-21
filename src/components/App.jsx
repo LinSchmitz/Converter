@@ -3,20 +3,24 @@ import React, { useEffect, useState } from 'react';
 // `https://api.frankfurter.app/latest?amount=100&from=EUR&to=USD`
 
 export default function App() {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
   const [fromCur, setFromCur] = useState('EUR');
   const [toCur, setToCur] = useState('USD');
+  const [converted, setConverted] = useState('');
 
-  useEffect(function () {
-    async function convert() {
-      const res = await fetch(
-        `https://api.frankfurter.app/latest?${amount}=100&from=${fromCur}&to=${toCur} `
-      );
-      const data = await res.json();
-      console.log(data);
-    }
-    convert();
-  }, []);
+  useEffect(
+    function () {
+      async function convert() {
+        const res = await fetch(
+          `https://api.frankfurter.app/latest?amount=${amount}&from=${fromCur}&to=${toCur} `
+        );
+        const data = await res.json();
+        setConverted(data.rates[toCur]);
+      }
+      convert();
+    },
+    [amount, fromCur, toCur]
+  );
 
   return (
     <div>
@@ -40,7 +44,9 @@ export default function App() {
         <option value="CAD">CAD</option>
         <option value="INR">INR</option>
       </select>
-      <p>OUTPUT</p>
+      <p>
+        {converted} {toCur}{' '}
+      </p>
     </div>
   );
 }
